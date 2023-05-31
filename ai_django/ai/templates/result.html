@@ -1,5 +1,5 @@
-모델 분류 결과 나올 화면
-나중에 json으로 넘겨줘야 할 듯
-{% block prediction %}
-{{prediction}}
-{% endblock %}
+<form method="post">
+    {% csrf_token %}
+    
+    <input type="submit" value="Submit">
+  </form>
