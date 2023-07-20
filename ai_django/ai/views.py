@@ -10,7 +10,7 @@ import requests
 import subprocess
 import os
 def result(request):
-    activate_cmd = f"conda activate openmmlab"
+    activate_cmd = f"conda activate cail"
     # subprocess.run(activate_cmd, shell=True)
     
     cd_cmd = "cd for_inference"
@@ -23,9 +23,13 @@ def result(request):
     file_path = os.path.abspath('../ai_django/for_inference/outputs/preds/demo3.json')
     f = open(file_path)
     data = json.load(f)
-    print(data.get('labels'))
-    # headers = {'Content-Type': 'application/json'}
-    # url = 'http://localhost:8080/model_result'
+    labels = data.get('labels')
+    scores = data.get('scores')
+    print(print_output(labels, scores))
+
+
+    headers = {'Content-Type': 'application/json'}
+    url = 'http://localhost:8080/pet/result'
     # json_data = json.dumps(data)  # 딕셔너리를 JSON 문자열로 변환
     # response = requests.post(url, data=payload)
     
@@ -38,3 +42,12 @@ def result(request):
     #     return JsonResponse({'message': '요청이 성공적으로 전송되었습니다.'})
     # else:
     #     return JsonResponse({'message': '요청 전송에 실패했습니다.', 'status_code': response.status_code})
+
+
+def print_output(labels, scores):
+
+    category_names = ["증상없음", "각막궤양", "각막부골편", "결막염", "비궤양성각막염", "안검염"]
+
+    max_idx = scores.index(max(scores))
+
+    return category_names[labels[max_idx]]
