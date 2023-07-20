@@ -29,7 +29,7 @@ router.register('members1', ai.api.MemberViewSet)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("ai/", include("ai.urls")),
+    path("ai", include("ai.urls")),
     # path("ai/", views.result),
     path('api/v1/', include((router.urls, 'member')))
     

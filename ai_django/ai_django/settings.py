@@ -131,11 +131,11 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-CORS_ORIGIN_WHITELIST = [
+# CORS & CSRF 공격 보안 설정
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
     'http://localhost:8080',
-    # 다른 허용할 도메인들을 여기에 추가
 ]
-APPEND_SLASH = False
 
+CORS_ALLOW_CREDENTIALS = True
 CSRF_COOKIE_SECURE = False
-CSRF_COOKIE_SAMESITE = 'None'
