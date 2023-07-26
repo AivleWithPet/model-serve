@@ -1,20 +1,20 @@
-from django.shortcuts import render
-import pandas as pd
-from django.shortcuts import render
-from django.middleware.csrf import get_token
 from django.http import JsonResponse
-from django.views.decorators.http import require_POST, require_GET
-from . import get_result
-import json
-import requests
 import subprocess
+import json
 import os
+from django.core.files.storage import FileSystemStorage
+
 def result(request):
-    activate_cmd = f"conda activate cail"
-    # subprocess.run(activate_cmd, shell=True)
+    if request.method == "POST" and request.FILES.get("file"):
+        file = request.FILES["file"]
+        token = request.POST.get("token")
+        
+        # fs = FileSystemStorage('/')
+        # filename = fs.save(file.name, file)
+        # file_url = fs.url(filename)
     
+    activate_cmd = f"conda activate copet"
     cd_cmd = "cd for_inference"
-    # subprocess.run(cd_cmd,shell=True)
     
     command = "python inf.py input_image/demo3.png configs/withpet/rtmdet_tiny_8xb32-300e_coco.py --weights checkpoints/epoch_7.pth --device cpu"
     process = subprocess.Popen(f"{activate_cmd} && {cd_cmd} && {command}", stdout=subprocess.PIPE, shell=True)
@@ -28,8 +28,8 @@ def result(request):
     print(print_output(labels, scores))
 
 
-    headers = {'Content-Type': 'application/json'}
-    url = 'http://localhost:8080/pet/result'
+    # headers = {'Content-Type': 'application/json'}
+    # url = 'http://localhost:8080/pet/result'
     # json_data = json.dumps(data)  # 딕셔너리를 JSON 문자열로 변환
     # response = requests.post(url, data=payload)
     
