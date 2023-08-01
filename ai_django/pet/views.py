@@ -33,22 +33,23 @@ def result(request):
     labels = data.get('labels')
     scores = data.get('scores')
     
-    files = {'file': file}
+    files = {'imageFile': file}
     data = {
-        'pet_id': pet_id,
-        'disase_name': output(labels, scores)
+        'petId': pet_id,
+        'result': output(labels, scores)
     }
     headers = {
         'Authorization': f'Bearer {access_token}',
         'Content-Type': 'multipart/form-data'
     }
+
     url = 'http://localhost:8080/pet/result'
     
     response = requests.post(url, files= files, data=data, headers=headers)
-    response_data = response.json()
+    # response_data = response.json()
     
-    return JsonResponse({'result': response_data})
-    # return JsonResponse({'result': output(labels, scores)})
+    # return JsonResponse({'result': response_data})
+    return JsonResponse({'result': output(labels, scores)})
 
 def output(labels, scores):
 
