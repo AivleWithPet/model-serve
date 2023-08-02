@@ -14,6 +14,13 @@ def result(request):
         pet_id = request.POST.get("pet_id")
         access_token = request.POST.get("token")
         
+        # 리액트 - 장고 이미지 전송 확인 (정상)
+        # file_path = os.path.join("", file.name)
+        # with open(file_path, 'wb') as destination:
+        #     for chunk in file.chunks():
+        #         destination.write(chunk)
+
+        
         fs = FileSystemStorage()
         file_name = fs.save(file.name, file)
         
@@ -33,23 +40,25 @@ def result(request):
     labels = data.get('labels')
     scores = data.get('scores')
     
-    files = {'imageFile': file}
+    
+    # files = {'imageFile': file}
+    # files = {'imageFile': (file_name, file)}
+    files = {'imageFile': (file.name, file.read())}
     data = {
         'petId': pet_id,
         'result': output(labels, scores)
     }
     headers = {
         'Authorization': f'Bearer {access_token}',
-        'Content-Type': 'multipart/form-data'
+        # 'Content-Type': 'multipart/form-data' #refreshpart에서는 필요 없음
     }
 
     url = 'http://localhost:8080/pet/result'
     
     response = requests.post(url, files= files, data=data, headers=headers)
-    # response_data = response.json()
+    response_data = response.json()
     
-    # return JsonResponse({'result': response_data})
-    return JsonResponse({'result': output(labels, scores)})
+    return JsonResponse({'result': response_data})
 
 def output(labels, scores):
 
