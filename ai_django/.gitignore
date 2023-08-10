@@ -1,4 +1,6 @@
 mmdetection
+*/input_image
+*/outputs
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

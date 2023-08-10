@@ -39,7 +39,7 @@ def result(request):
     data = json.load(f)
     labels = data.get('labels')
     scores = data.get('scores')
-    
+    percentage = scores[0] * 100
     
     # files = {'imageFile': file}
     # files = {'imageFile': (file_name, file)}
@@ -47,7 +47,8 @@ def result(request):
     files = {'imageFile': open(file_path, 'rb')}
     data = {
         'petId': pet_id,
-        'result': output(labels, scores)
+        'result': output(labels, scores),
+        'percentage': percentage,
     }
     headers = {
         'Authorization': f'Bearer {access_token}',
