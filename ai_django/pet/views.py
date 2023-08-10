@@ -15,10 +15,10 @@ def result(request):
         access_token = request.POST.get("token")
         
         # 리액트 - 장고 이미지 전송 확인 (정상)
-        # file_path = os.path.join("", file.name)
-        # with open(file_path, 'wb') as destination:
-        #     for chunk in file.chunks():
-        #         destination.write(chunk)
+        file_path = os.path.join("", file.name)
+        with open(file_path, 'wb') as destination:
+            for chunk in file.chunks():
+                destination.write(chunk)
 
         
         fs = FileSystemStorage()
@@ -33,9 +33,9 @@ def result(request):
     process.communicate()
     
     file_name_split = file_name.rsplit('.', 1)[0] # 확장자 제거
-    file_path = os.path.abspath(f'../ai_django/for_inference/outputs/preds/{file_name_split}.json')
+    result_path = os.path.abspath(f'../ai_django/for_inference/outputs/preds/{file_name_split}.json')
     
-    f = open(file_path)
+    f = open(result_path)
     data = json.load(f)
     labels = data.get('labels')
     scores = data.get('scores')
@@ -43,7 +43,8 @@ def result(request):
     
     # files = {'imageFile': file}
     # files = {'imageFile': (file_name, file)}
-    files = {'imageFile': (file.name, file.read())}
+    # files = {'imageFile': (file.name, file.read())}
+    files = {'imageFile': open(file_path, 'rb')}
     data = {
         'petId': pet_id,
         'result': output(labels, scores)
